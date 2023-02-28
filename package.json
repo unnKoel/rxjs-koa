@@ -1,0 +1,15 @@
+{
+  "name": "steamable-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Addy Zhou",
+  "license": "ISC",
+  "dependencies": {
+    "nodejs-base64": "^2.0.0",
+    "rxjs": "^7.8.0"
+  }
+}
