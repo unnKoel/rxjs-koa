@@ -5,22 +5,32 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && babel src --extensions '.ts' --out-dir build",
+    "start:dev": "nodemon babel-node src --extensions '.ts'",
     "prepare": "husky install"
   },
   "author": "Addy Zhou",
   "license": "ISC",
   "dependencies": {
+    "core-js": "^2.6.12",
     "nodejs-base64": "^2.0.0",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.21.0",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "eslint": "^8.36.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
+    "nodemon": "^2.0.21",
     "prettier": "2.8.5",
+    "rimraf": "^4.4.0",
     "typescript": "^5.0.2"
   },
   "lint-staged": {
