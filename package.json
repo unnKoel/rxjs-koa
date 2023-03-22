@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf ./build && babel src --extensions '.ts' --out-dir build",
-    "start:dev": "nodemon babel-node src --extensions '.ts'",
-    "prepare": "husky install"
+    "build": "rimraf ./build && babel src --extensions .ts --out-dir build",
+    "start:dev": "nodemon --watch src --exec babel-node src/index.ts --extensions .ts",
+    "prepare": "husky install",
+    "lint": "eslint src --ext .ts"
   },
   "author": "Addy Zhou",
   "license": "ISC",
   "dependencies": {
-    "core-js": "^2.6.12",
+    "core-js": "^3.29.1",
+    "koa": "^2.14.1",
     "nodejs-base64": "^2.0.0",
     "rxjs": "^7.8.0"
   },
@@ -22,19 +24,22 @@
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@types/koa": "^2.13.5",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
+    "babel-node": "^0.0.1-security",
     "eslint": "^8.36.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
     "nodemon": "^2.0.21",
     "prettier": "2.8.5",
     "rimraf": "^4.4.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
-    "*.ts": "eslint"
+    "*.ts": "npx lint"
   }
 }
