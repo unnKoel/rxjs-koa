@@ -11,7 +11,9 @@
     "project": ["./tsconfig.json"]
   },
   "rules": {
-    "prettier/prettier": 2
+    "prettier/prettier": 2,
+    "@typescript-eslint/consistent-type-imports": 0,
+    "@typescript-eslint/prefer-function-type": 0
   },
   "plugins": ["prettier"]
 }
