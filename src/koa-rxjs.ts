@@ -1,5 +1,6 @@
 import Application, { Middleware } from 'koa'
-import { Observable, Subject } from 'rxjs'
+import { Observable, Subject, from } from 'rxjs'
+import { mergeAll } from 'rxjs/operators'
 
 export interface Controller {
   (
@@ -19,5 +20,15 @@ const createKoaRxjsMiddleware = (controller: Controller): Middleware => {
 
   return koaRxjsMiddleware
 }
+
+export const composeControllers =
+  (...controllers: Controller[]) =>
+  (rootObservable: Observable<Application.ParameterizedContext>) => {
+    const controllerObservables = controllers.map((controller) =>
+      controller(rootObservable),
+    )
+
+    return from(controllerObservables).pipe(mergeAll())
+  }
 
 export default createKoaRxjsMiddleware

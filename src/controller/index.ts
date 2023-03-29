@@ -1,16 +1,5 @@
-import Application from 'koa'
-import { Observable, map } from 'rxjs'
-import { Controller } from '../koa-rxjs'
+import exampleController from './example'
+import exampleController2 from './example2'
+import { composeControllers } from '../koa-rxjs'
 
-const rootController: Controller = (
-  rootObservable: Observable<Application.ParameterizedContext>,
-) => {
-  return rootObservable.pipe(
-    map((ctx) => {
-      console.log(ctx.URL)
-      return ctx
-    }),
-  )
-}
-
-export default rootController
+export default composeControllers(exampleController, exampleController2)
