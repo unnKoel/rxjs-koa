@@ -51,7 +51,7 @@ const route =
   ) =>
   (observable: Observable<T>) =>
     new Observable<T>((subscriber) => {
-      observable.subscribe({
+      const subscription = observable.subscribe({
         next(value) {
           const matched = matchPattern(pattern, value.path)
           const methodEqual =
@@ -66,6 +66,10 @@ const route =
         error: subscriber.error,
         complete: subscriber.complete,
       })
+
+      return () => {
+        subscription.unsubscribe()
+      }
     })
 
 export default route
