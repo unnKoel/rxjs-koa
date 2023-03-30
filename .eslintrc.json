@@ -13,7 +13,8 @@
   "rules": {
     "prettier/prettier": 2,
     "@typescript-eslint/consistent-type-imports": 0,
-    "@typescript-eslint/prefer-function-type": 0
+    "@typescript-eslint/prefer-function-type": 0,
+    "@typescript-eslint/strict-boolean-expressions": 0
   },
   "plugins": ["prettier"]
 }

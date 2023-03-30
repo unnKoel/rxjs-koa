@@ -13,7 +13,10 @@ const createKoaRxjsMiddleware = (controller: Controller): Middleware => {
 
   const koaRxjsMiddleware: Middleware = async (ctx, next) => {
     await new Promise((resolve, reject) => {
-      controller(rootSubject.asObservable()).subscribe(resolve, reject)
+      controller(rootSubject.asObservable()).subscribe({
+        next: resolve,
+        error: reject,
+      })
       rootSubject.next(ctx)
     }).then(next)
   }
