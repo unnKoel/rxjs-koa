@@ -8,9 +8,9 @@ const exampleController2: Controller = (
   rootObservable: Observable<KoaContext>,
 ) => {
   return rootObservable.pipe(
-    route('/koa', Method.Get),
+    route('/koa/:id?', Method.Get),
     map(({ ctx }) => {
-      ctx.body = 'hello koa'
+      ctx.body = `hello koa ${ctx.params!.id}`
       return ctx
     }),
   )
