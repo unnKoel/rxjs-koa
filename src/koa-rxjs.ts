@@ -1,15 +1,14 @@
-import Application, { Middleware } from 'koa'
+import { Middleware } from 'koa'
 import { Observable, Subject, from } from 'rxjs'
 import { mergeAll } from 'rxjs/operators'
+import { KoaContext } from './model'
 
 export interface Controller {
-  (
-    rootObservable: Observable<Application.ParameterizedContext>,
-  ): Observable<unknown>
+  (rootObservable: Observable<KoaContext>): Observable<unknown>
 }
 
 const createKoaRxjsMiddleware = (controller: Controller): Middleware => {
-  const rootSubject = new Subject<Application.ParameterizedContext>()
+  const rootSubject = new Subject<KoaContext>()
 
   const koaRxjsMiddleware: Middleware = async (ctx, next) => {
     await new Promise((resolve, reject) => {
@@ -17,7 +16,7 @@ const createKoaRxjsMiddleware = (controller: Controller): Middleware => {
         next: resolve,
         error: reject,
       })
-      rootSubject.next(ctx)
+      rootSubject.next({ ctx, next })
     }).then(next)
   }
 
@@ -26,7 +25,7 @@ const createKoaRxjsMiddleware = (controller: Controller): Middleware => {
 
 export const composeControllers =
   (...controllers: Controller[]) =>
-  (rootObservable: Observable<Application.ParameterizedContext>) => {
+  (rootObservable: Observable<KoaContext>) => {
     const controllerObservables = controllers.map((controller) =>
       controller(rootObservable),
     )

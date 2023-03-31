@@ -1,12 +1,20 @@
 import { pathToRegexp, Key } from 'path-to-regexp'
 import { Observable } from 'rxjs'
-import HttpErrors from './http-error'
+import createError from 'http-errors'
+import { KoaContext } from './model'
 
 interface Matcher {
   keys: Key[]
   regex: RegExp
 }
 type Cache = Record<string, Matcher>
+
+export enum Method {
+  Get = 'get',
+  Post = 'post',
+  Put = 'put',
+  Delete = 'delete',
+}
 
 const cache: Cache = {}
 
@@ -44,23 +52,69 @@ const matchPattern = (
   }
 }
 
-const route =
-  <T extends { path: string; method: string; params: Record<string, string> }>(
-    pattern: string,
-    method: string,
-  ) =>
-  (observable: Observable<T>) =>
-    new Observable<T>((subscriber) => {
+interface Route {
+  (pattern: string, method: Method): (
+    observable: Observable<KoaContext>,
+  ) => Observable<KoaContext>
+
+  patterns?: Array<{ pattern: string; method: Method }>
+}
+
+const matchRoutes = (
+  patterns: Array<{ pattern: string; method: Method }>,
+  path: string,
+  method: Method,
+): { pattern: string; method: Method; params: Params; route: boolean } => {
+  const matched = {
+    pattern: '',
+    method: Method.Get,
+    params: {},
+    route: false,
+  }
+  for (let i = 0; i < patterns.length; i++) {
+    const { pattern, method: specifiedMethod } = patterns[i]
+    const matchedPath = matchPattern(pattern, path)
+    const matchedPathAndMethod =
+      // eslint-disable-next-line no-self-compare
+      matchedPath && specifiedMethod.toLowerCase() === method.toLowerCase()
+    if (matchedPathAndMethod) {
+      matched.params = matchedPath.params
+      matched.route = true
+      matched.pattern = pattern
+      matched.method = specifiedMethod
+      return matched
+    }
+  }
+
+  return matched
+}
+
+const route: Route =
+  (pattern: string, method: Method) => (observable: Observable<KoaContext>) => {
+    route.patterns = route.patterns ?? []
+    route.patterns.push({ pattern, method })
+
+    return new Observable<KoaContext>((subscriber) => {
       const subscription = observable.subscribe({
-        next(value) {
-          const matched = matchPattern(pattern, value.path)
-          const methodEqual =
-            method.toLowerCase() === value.method.toLowerCase()
-          if (matched && methodEqual) {
-            value.params = matched.params
-            subscriber.next(value)
-          } else {
-            subscriber.error(HttpErrors.NotFound('no route matched'))
+        async next(koaContext) {
+          const { ctx } = koaContext
+          const matched = matchRoutes(
+            route.patterns ?? [],
+            ctx.path,
+            ctx.method as Method,
+          )
+          if (!matched.route) {
+            subscriber.error(createError(404))
+            return
+          }
+
+          if (
+            matched.route &&
+            matched.pattern === pattern &&
+            matched.method === method
+          ) {
+            ctx.params = matched.params
+            subscriber.next(koaContext)
           }
         },
         error: subscriber.error,
@@ -71,5 +125,6 @@ const route =
         subscription.unsubscribe()
       }
     })
+  }
 
 export default route
