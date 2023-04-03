@@ -17,6 +17,8 @@
   "dependencies": {
     "core-js": "^3.29.1",
     "koa": "^2.14.1",
+    "koa-logger": "^3.2.1",
+    "mongoose": "^7.0.3",
     "nodejs-base64": "^2.0.0",
     "path-to-regexp": "^6.2.1",
     "rxjs": "^7.8.0"
@@ -28,6 +30,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
     "@types/koa": "^2.13.5",
+    "@types/koa-logger": "^3.1.2",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.55.0",
