@@ -1,18 +1,19 @@
 import Koa from 'koa'
+import logger from 'koa-logger'
 import createKoaRxjsMiddleware from './koa-rxjs'
 import rootController from './controller/index'
 import bodyparser from 'koa-bodyparser'
+import { connect } from './db'
+import config from './config'
 
-const app = new Koa()
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+;(async () => {
+  const app = new Koa()
 
-app.use(bodyparser())
-app.use(createKoaRxjsMiddleware(rootController))
+  app.use(logger())
+  app.use(bodyparser())
+  app.use(createKoaRxjsMiddleware(rootController))
+  await connect(config!.db)
 
-app.use(async (ctx, next) => {
-  const start = Date.now()
-  await next()
-  const ms = Date.now() - start
-  ctx.set('X-Response-Time', `${ms}ms`)
-})
-
-app.listen(3000)
+  app.listen(3000)
+})()
