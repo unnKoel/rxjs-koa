@@ -1,6 +1,6 @@
 # Steamable-express
 
-## Issues
+## Q&A
 
 - what does the typeconfig option "lib" do?
 

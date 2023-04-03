@@ -10,7 +10,10 @@ const exampleController: Controller = (
   return rootObservable.pipe(
     route('/rxjs', Method.Get),
     map(({ ctx }) => {
-      ctx.body = 'hello rxjs'
+      ctx.body = {
+        topic: 'rjxs',
+        content: '...',
+      }
       return ctx
     }),
   )

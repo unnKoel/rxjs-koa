@@ -4,19 +4,19 @@ import { Controller } from '../koa-rxjs'
 import { KoaContext } from '../model'
 import route, { Method } from '../route-operator'
 
-const exampleController2: Controller = (
+const exampleBodyController: Controller = (
   rootObservable: Observable<KoaContext>,
 ) => {
   return rootObservable.pipe(
-    route('/koa/:id?', Method.Get),
+    route('/body-example', Method.Post),
     map(({ ctx }) => {
       ctx.body = {
-        topic: 'koa',
-        content: '...',
+        topic: 'rjxs',
+        content: ctx.request.body,
       }
       return ctx
     }),
   )
 }
 
-export default exampleController2
+export default exampleBodyController
