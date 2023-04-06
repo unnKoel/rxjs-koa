@@ -4,4 +4,4 @@ import production from './env.prod'
 export default {
   development,
   production,
-}[process.env.NODE_ENV ?? 'development']
+}[process.env.NODE_ENV ?? 'development']!

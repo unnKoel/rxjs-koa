@@ -5,6 +5,7 @@ import rootController from './controller/index'
 import bodyparser from 'koa-bodyparser'
 import { connect } from './db'
 import config from './config'
+import RespondFormat from './middleware/koa-respond-format'
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 ;(async () => {
@@ -12,8 +13,9 @@ import config from './config'
 
   app.use(logger())
   app.use(bodyparser())
+  app.use(RespondFormat())
   app.use(createKoaRxjsMiddleware(rootController))
-  await connect(config!.db)
+  await connect(config.db)
 
   app.listen(3000)
 })()

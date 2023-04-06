@@ -1,7 +1,7 @@
 import { pathToRegexp, Key } from 'path-to-regexp'
 import { Observable } from 'rxjs'
 import createError from 'http-errors'
-import { KoaContext } from './model'
+import { KoaContext } from '../model'
 
 interface Matcher {
   keys: Key[]

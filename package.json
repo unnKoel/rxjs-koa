@@ -15,7 +15,9 @@
   "author": "Addy Zhou",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "core-js": "^3.29.1",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.14.1",
     "koa-bodyparser": "^4.4.0",
     "koa-logger": "^3.2.1",
@@ -30,6 +32,8 @@
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/koa": "^2.13.5",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-logger": "^3.1.2",

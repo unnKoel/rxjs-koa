@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Controller } from '../koa-rxjs'
 import { KoaContext } from '../model'
-import route, { Method } from '../route-operator'
+import route, { Method } from '../operators/route-operator'
 
 const exampleController2: Controller = (
   rootObservable: Observable<KoaContext>,

@@ -27,3 +27,7 @@
 [Offical KOA](https://koajs.com/)
 
 [How Koa middleware works](https://itnext.io/how-koa-middleware-works-f4386b5573c)
+
+[Install MongoDB Community Edition on macOS](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition)
+
+[mongosh](https://www.mongodb.com/docs/mongodb-shell/reference/editor-mode/)
