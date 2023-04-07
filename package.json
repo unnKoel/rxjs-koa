@@ -58,6 +58,9 @@
   },
   "lint-staged": {
     "*": "prettier --check",
-    "*.ts": "eslint --ext .ts"
+    "*.ts": [
+      "eslint --ext .ts",
+      "tsc"
+    ]
   }
 }

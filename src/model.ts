@@ -1,11 +1,9 @@
-import Application, { DefaultContext, DefaultState } from 'koa'
+import { DefaultState, Next, ParameterizedContext } from 'koa'
+import { JwtPayload } from 'jsonwebtoken'
 
-export type ParameterizedContextExtendsParams<
-  StateT = DefaultState,
-  ContextT = DefaultContext,
-  ResponseBodyT = unknown,
-> = Application.ParameterizedContext<StateT, ContextT, ResponseBodyT> & {
+export interface ContextExtendProperties {
   params?: Record<string, string>
+  user: string | JwtPayload
   succeed: (data?: object, message?: string) => void
   fail: (data?: object, message?: string) => void
   respondWith: (code: string | number, data?: object, message?: string) => void
@@ -13,11 +11,11 @@ export type ParameterizedContextExtendsParams<
 
 export interface KoaContext<
   StateT = DefaultState,
-  ContextT = DefaultContext,
+  ContextT = ContextExtendProperties,
   ResponseBodyT = unknown,
 > {
-  ctx: ParameterizedContextExtendsParams<StateT, ContextT, ResponseBodyT>
-  next: Application.Next
+  ctx: ParameterizedContext<StateT, ContextT, ResponseBodyT>
+  next: Next
 }
 
 export interface User {
