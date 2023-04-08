@@ -9,8 +9,8 @@ const authenticate = () => (observable: Observable<KoaContext>) => {
     const subscription = observable.subscribe({
       async next(koaContext) {
         const { ctx } = koaContext
-        // token format: `Authorization: Bearer <token>`
-        let token = ctx.req.headers.Authorization as string | undefined
+        // token format: `authorization: Bearer <token>`
+        let token = ctx.req.headers.authorization
         token = token?.split(' ')[1]?.trim()
 
         if (!token) {

@@ -1,22 +1,18 @@
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
 import { Controller } from '../koa-rxjs'
 import { KoaContext } from '../model'
 import route, { Method } from '../operators/route-operator'
+import { service } from '../operators/mvc-operator'
+import authenticate from '../operators/auth-operator'
 
-const exampleController2: Controller = (
+export const authController: Controller = (
   rootObservable: Observable<KoaContext>,
 ) => {
   return rootObservable.pipe(
-    route('/koa/:id?', Method.Get),
-    map(({ ctx }) => {
-      ctx.body = {
-        topic: 'koa',
-        content: '...',
-      }
-      return ctx
+    route('/auth', Method.Get),
+    authenticate(),
+    service(async ({ ctx }) => {
+      return ctx.succeed()
     }),
   )
 }
-
-export default exampleController2
