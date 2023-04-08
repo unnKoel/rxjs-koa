@@ -4,9 +4,13 @@ import { JwtPayload } from 'jsonwebtoken'
 export interface ContextExtendProperties {
   params?: Record<string, string>
   user: string | JwtPayload
-  succeed: (data?: object, message?: string) => void
-  fail: (data?: object, message?: string) => void
-  respondWith: (code: string | number, data?: object, message?: string) => void
+  succeed: (data?: object, message?: string) => KoaContext
+  fail: (data?: object, message?: string) => KoaContext
+  respondWith: (
+    code: string | number,
+    data?: object,
+    message?: string,
+  ) => KoaContext
 }
 
 export interface KoaContext<
@@ -15,7 +19,7 @@ export interface KoaContext<
   ResponseBodyT = unknown,
 > {
   ctx: ParameterizedContext<StateT, ContextT, ResponseBodyT>
-  next: Next
+  next?: Next
 }
 
 export interface User {

@@ -13,7 +13,7 @@ const RespondFormat: (
         message,
       }
 
-      return ctx
+      return { ctx, next }
     }
 
     ctx.fail = (data?: object, message: string = 'failure') => {
@@ -23,7 +23,8 @@ const RespondFormat: (
         message,
       }
 
-      return ctx
+      console.log('ctx1', ctx.body)
+      return { ctx, next }
     }
 
     ctx.respondWith = (
@@ -37,7 +38,7 @@ const RespondFormat: (
         message,
       }
 
-      return ctx
+      return { ctx, next }
     }
 
     await next()

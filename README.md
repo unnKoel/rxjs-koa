@@ -31,3 +31,5 @@
 [Install MongoDB Community Edition on macOS](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition)
 
 [mongosh](https://www.mongodb.com/docs/mongodb-shell/reference/editor-mode/)
+
+[what is MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)

@@ -1,6 +1,6 @@
 import { DefaultState, Middleware } from 'koa'
 import { Observable, Subject, from } from 'rxjs'
-import { mergeAll } from 'rxjs/operators'
+import { mergeAll, first } from 'rxjs/operators'
 import { ContextExtendProperties, KoaContext } from './model'
 
 export interface Controller {
@@ -12,12 +12,14 @@ const createKoaRxjsMiddleware = (
 ): Middleware<DefaultState, ContextExtendProperties> => {
   const rootSubject = new Subject<KoaContext>()
 
+  const rootControllerObservable = controller(rootSubject.asObservable())
+
   const koaRxjsMiddleware: Middleware<
     DefaultState,
     ContextExtendProperties
   > = async (ctx, next) => {
     await new Promise((resolve, reject) => {
-      controller(rootSubject.asObservable()).subscribe({
+      rootControllerObservable.pipe(first()).subscribe({
         next: resolve,
         error: reject,
       })
