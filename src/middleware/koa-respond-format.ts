@@ -1,6 +1,6 @@
 import { Middleware } from 'koa'
 
-const RespondFormat: (
+const respondFormat: (
   succeedCode?: string | number,
   failCode?: string | number,
 ) => Middleware =
@@ -44,4 +44,4 @@ const RespondFormat: (
     await next()
   }
 
-export default RespondFormat
+export default respondFormat

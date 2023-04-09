@@ -33,3 +33,15 @@
 [mongosh](https://www.mongodb.com/docs/mongodb-shell/reference/editor-mode/)
 
 [what is MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+
+[How To Safely Store A Password](https://codahale.com/how-to-safely-store-a-password/)
+
+[URL encode and decode](https://www.cnblogs.com/liuhongfeng/p/5006341.html)
+
+[Uniform Resource Identifier (URI): Generic Syntax](https://www.rfc-editor.org/rfc/rfc3986)
+
+[Plus sign in query string](https://stackoverflow.com/questions/6855624/plus-sign-in-query-string)
+
+## further
+
+- encryption
