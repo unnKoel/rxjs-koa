@@ -1,9 +1,7 @@
-import { DefaultState, Next, ParameterizedContext } from 'koa'
-import { JwtPayload } from 'jsonwebtoken'
+import { DefaultContext, DefaultState, Next, ParameterizedContext } from 'koa'
 
-export interface ContextExtendProperties {
+export interface ContextExtendProperties extends DefaultContext {
   params?: Record<string, string>
-  user: string | JwtPayload
   succeed: (data?: object, message?: string) => KoaContext
   fail: (data?: object, message?: string) => KoaContext
   respondWith: (

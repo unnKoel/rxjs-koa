@@ -6,54 +6,72 @@ import { KoaContext, User } from '../model'
 import route, { Method } from '../operators/route-operator'
 import userModel from '../db/models/user'
 import { generateToken } from '../operators/auth-operator'
-import { service } from '../operators/mvc-operator'
+import { service, model } from '../operators/mvc-operator'
 
-const register: Controller = (rootObservable: Observable<KoaContext>) => {
-  return rootObservable.pipe(
-    route('/register', Method.Post),
-    service(async ({ ctx }) => {
-      const { name, password, email } = ctx.request.body as User
-      const oldUser = await userModel.findOne({ email })
-      if (oldUser) {
-        return ctx.fail(undefined, 'User Already Exist. Please Login')
-      }
+// const register: Controller = (controllerObservable: Observable<KoaContext>) => {
+//   return controllerObservable.pipe(
+//     route('/register', Method.Post),
+//     service((serviceObservable) => {
+//       serviceObservable.pipe(
+//         model(async ({ ctx }) => {
+//           const { email } = ctx.request.body as User
+//           ctx.user = await userModel.findOne({ email })
 
-      await userModel.addUser({ name, password, email })
-      const token = generateToken(
-        { name, email },
-        {
-          expiresIn: '2h',
-        },
-      )
+//           return { ctx }
+//         }),
+//         map(() => {
 
-      return ctx.succeed({ name, email, token })
-    }),
-    map(({ ctx }) => {
-      console.log('ctx', ctx.body)
-    }),
-  )
-}
+//         })
+//       )
+//       const { name, password, email } = ctx.request.body as User
+//       const oldUser = await userModel.findOne({ email })
+//       if (oldUser) {
+//         return ctx.fail(undefined, 'User Already Exist. Please Login')
+//       }
 
-const login: Controller = (rootObservable: Observable<KoaContext>) => {
-  return rootObservable.pipe(
+//       await userModel.addUser({ name, password, email })
+//       const token = generateToken(
+//         { name, email },
+//         {
+//           expiresIn: '2h',
+//         },
+//       )
+
+//       return ctx.succeed({ name, email, token })
+//     }),
+//   )
+// }
+
+const login: Controller = (controllerObservable: Observable<KoaContext>) => {
+  return controllerObservable.pipe(
     route('/login', Method.Post),
-    service(async ({ ctx }) => {
-      const { email, password } = ctx.request.body as User
-      const user = await userModel.findOne({ email })
-      if (!user || !bcrypt.compareSync(password, user.password)) {
-        return ctx.throw(401)
-      }
+    service((serviceObservable) =>
+      serviceObservable.pipe(
+        model(async ({ ctx }) => {
+          const { email } = ctx.request.body as User
+          ctx.user = await userModel.findOne({ email })
 
-      const token = generateToken(
-        { name: user.name, email },
-        {
-          expiresIn: '2h',
-        },
-      )
+          return { ctx }
+        }),
+        map(({ ctx }) => {
+          const { email, password } = ctx.request.body as User
+          const { user } = ctx
+          if (!user || !bcrypt.compareSync(password, user.password)) {
+            return ctx.throw(401)
+          }
 
-      return ctx.succeed({ name: user.name, email: user.email, token })
-    }),
+          const token = generateToken(
+            { name: user.name, email },
+            {
+              expiresIn: '2h',
+            },
+          )
+
+          return ctx.succeed({ name: user.name, email: user.email, token })
+        }),
+      ),
+    ),
   )
 }
 
-export default composeControllers(register, login)
+export default composeControllers(login)
