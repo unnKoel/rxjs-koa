@@ -60,6 +60,10 @@
     "typescript": "^5.0.2"
   },
   "lint-staged": {
-    "*": "prettier --check"
+    "*": "prettier --check",
+    "*.ts": [
+      "eslint --ext .ts",
+      "tsc"
+    ]
   }
 }
