@@ -1,43 +1,58 @@
 import { Middleware } from 'koa'
 
+const responseDataMessage = (
+  ...args: Array<object | string>
+): { message?: string; data?: object } => {
+  const response: { message?: string; data: object } = { data: {} }
+
+  args.slice(0, 2).forEach((value) => {
+    if (typeof value === 'string') {
+      response.message = value
+    } else if (typeof value === 'object') {
+      response.data = value
+    }
+  })
+
+  return response
+}
+
 const respondFormat: (
   succeedCode?: string | number,
   failCode?: string | number,
 ) => Middleware =
   (succeedCode = 1, failCode = 0) =>
   async (ctx, next) => {
-    ctx.succeed = (data?: object, message: string = 'success') => {
+    ctx.succeed = (...args: Array<object | string>) => {
       ctx.body = {
         code: succeedCode,
-        data,
-        message,
+        message: 'success',
+        ...responseDataMessage(...args),
       }
 
-      return { ctx, next }
+      return ctx
     }
 
-    ctx.fail = (data?: object, message: string = 'failure') => {
+    ctx.fail = (...args: Array<object | string>) => {
       ctx.body = {
         code: failCode,
-        data,
-        message,
+        message: 'failure',
+        ...responseDataMessage(...args),
       }
 
-      return { ctx, next }
+      return ctx
     }
 
     ctx.respondWith = (
       code: string | number,
-      data?: object,
-      message?: string,
+      ...args: Array<object | string>
     ) => {
       ctx.body = {
         code,
-        data,
-        message,
+        message: '',
+        ...responseDataMessage(...args),
       }
 
-      return { ctx, next }
+      return ctx
     }
 
     await next()

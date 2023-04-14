@@ -1,7 +1,7 @@
 import { pathToRegexp, Key } from 'path-to-regexp'
 import { Observable } from 'rxjs'
 import createError from 'http-errors'
-import { KoaContext } from '../model'
+import { Ctx } from '../model'
 
 interface Matcher {
   keys: Key[]
@@ -54,8 +54,8 @@ const matchPattern = (
 
 interface Route {
   (pattern: string, method: Method): (
-    observable: Observable<KoaContext>,
-  ) => Observable<KoaContext>
+    observable: Observable<Ctx>,
+  ) => Observable<Ctx>
 
   patterns?: Array<{ pattern: string; method: Method }>
 }
@@ -90,14 +90,14 @@ const matchRoutes = (
 }
 
 const route: Route =
-  (pattern: string, method: Method) => (observable: Observable<KoaContext>) => {
+  (pattern: string, method: Method) => (observable: Observable<Ctx>) => {
     route.patterns = route.patterns ?? []
     route.patterns.push({ pattern, method })
 
-    return new Observable<KoaContext>((subscriber) => {
+    return new Observable<Ctx>((subscriber) => {
       const subscription = observable.subscribe({
-        async next(koaContext) {
-          const { ctx } = koaContext
+        async next(Ctx) {
+          const { ctx } = Ctx
           const matched = matchRoutes(
             route.patterns ?? [],
             ctx.path,
@@ -114,7 +114,7 @@ const route: Route =
             matched.method === method
           ) {
             ctx.params = matched.params
-            subscriber.next(koaContext)
+            subscriber.next(Ctx)
           }
         },
         error: subscriber.error,

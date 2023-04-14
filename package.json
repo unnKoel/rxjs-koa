@@ -11,7 +11,8 @@
     "sign": "babel-node --extensions .ts ./cmd.ts",
     "prepare": "husky install",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier . --write"
+    "prettier": "prettier . --write",
+    "check-types": "npx tsc"
   },
   "author": "Addy Zhou",
   "license": "ISC",
@@ -62,7 +63,8 @@
   "lint-staged": {
     "*": "prettier --check",
     "*.ts": [
-      "eslint --ext .ts"
+      "eslint --ext .ts",
+      "bash -c 'npm run check-types'"
     ]
   }
 }

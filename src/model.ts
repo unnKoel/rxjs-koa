@@ -2,21 +2,19 @@ import { DefaultContext, DefaultState, Next, ParameterizedContext } from 'koa'
 
 export interface ContextExtendProperties extends DefaultContext {
   params?: Record<string, string>
-  succeed: (data?: object, message?: string) => KoaContext
-  fail: (data?: object, message?: string) => KoaContext
-  respondWith: (
-    code: string | number,
-    data?: object,
-    message?: string,
-  ) => KoaContext
+  succeed: (...args: Array<object | string>) => Ctx
+  fail: (...args: Array<object | string>) => Ctx
+  respondWith: (code: string | number, ...args: Array<object | string>) => Ctx
 }
 
-export interface KoaContext<
-  StateT = DefaultState,
-  ContextT = ContextExtendProperties,
-  ResponseBodyT = unknown,
-> {
-  ctx: ParameterizedContext<StateT, ContextT, ResponseBodyT>
+export type Ctx = ParameterizedContext<
+  DefaultState,
+  ContextExtendProperties,
+  unknown
+>
+
+export interface KoaContext {
+  ctx: Ctx
   next?: Next
 }
 

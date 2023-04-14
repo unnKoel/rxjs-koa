@@ -1,14 +1,13 @@
 import { Observable } from 'rxjs'
-import { KoaContext } from '../model'
+import { Ctx } from '../model'
 import createError from 'http-errors'
 import jwt from 'jsonwebtoken'
 import config from '../config'
 
-const authenticate = () => (observable: Observable<KoaContext>) => {
-  return new Observable<KoaContext>((subscriber) => {
+const authenticate = () => (observable: Observable<Ctx>) => {
+  return new Observable<Ctx>((subscriber) => {
     const subscription = observable.subscribe({
-      async next(koaContext) {
-        const { ctx } = koaContext
+      async next(ctx) {
         // token format: `authorization: Bearer <token>`
         let token = ctx.req.headers.authorization
         token = token?.split(' ')[1]?.trim()
@@ -21,7 +20,7 @@ const authenticate = () => (observable: Observable<KoaContext>) => {
         try {
           const decoded = jwt.verify(token, config.token_key)
           ctx.user = decoded
-          subscriber.next(koaContext)
+          subscriber.next(ctx)
         } catch (err) {
           subscriber.error(createError(403, 'Invalid Token'))
         }

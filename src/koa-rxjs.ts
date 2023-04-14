@@ -1,16 +1,16 @@
 import { DefaultState, Middleware } from 'koa'
 import { Observable, Subject, from } from 'rxjs'
 import { mergeAll, first } from 'rxjs/operators'
-import { ContextExtendProperties, KoaContext } from './model'
+import { ContextExtendProperties, Ctx } from './model'
 
 export interface Controller {
-  (rootObservable: Observable<KoaContext>): Observable<unknown>
+  (rootObservable: Observable<Ctx>): Observable<unknown>
 }
 
 const createKoaRxjsMiddleware = (
   controller: Controller,
 ): Middleware<DefaultState, ContextExtendProperties> => {
-  const rootSubject = new Subject<KoaContext>()
+  const rootSubject = new Subject<Ctx>()
 
   const rootControllerObservable = controller(rootSubject.asObservable())
 
@@ -23,7 +23,7 @@ const createKoaRxjsMiddleware = (
         next: resolve,
         error: reject,
       })
-      rootSubject.next({ ctx, next })
+      rootSubject.next(ctx)
     }).then(next)
   }
 
@@ -32,7 +32,7 @@ const createKoaRxjsMiddleware = (
 
 export const composeControllers =
   (...controllers: Controller[]) =>
-  (rootObservable: Observable<KoaContext>) => {
+  (rootObservable: Observable<Ctx>) => {
     const controllerObservables = controllers.map((controller) =>
       controller(rootObservable),
     )

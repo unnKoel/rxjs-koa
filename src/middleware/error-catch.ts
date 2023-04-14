@@ -9,7 +9,7 @@ const errorCatch =
       await next()
     } catch (err) {
       if (err instanceof SignatureError) {
-        return ctx.fail(undefined, err.message)
+        return ctx.fail(err.message)
       }
       throw err
     }
