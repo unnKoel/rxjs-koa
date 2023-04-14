@@ -45,3 +45,9 @@
 ## further
 
 - encryption
+
+## issue
+
+- lint-staged ignores tsconfig.json when it called through husky hooks
+
+  https://github.com/okonet/lint-staged/issues/825
