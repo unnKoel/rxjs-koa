@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs'
-// import { map } from 'rxjs/operators'
 import bcrypt from 'bcryptjs'
 import { composeControllers, Controller } from '../koa-rxjs'
 import { Ctx, User } from '../model'
