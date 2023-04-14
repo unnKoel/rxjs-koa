@@ -23,7 +23,6 @@ const respondFormat: (
         message,
       }
 
-      console.log('ctx1', ctx.body)
       return { ctx, next }
     }
 

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs'
 
 const UserSchema = new mongoose.Schema(
   {
@@ -22,13 +22,13 @@ const UserSchema = new mongoose.Schema(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-    statics: {
-      async addUser({ name, email, password }) {
-        const salt = bcrypt.genSaltSync()
-        const hash = bcrypt.hashSync(password, salt)
-        return await this.create({ name, email, password: hash })
-      },
-    },
+    // statics: {
+    //   async addUser({ name, email, password }) {
+    //     const salt = bcrypt.genSaltSync()
+    //     const hash = bcrypt.hashSync(password, salt)
+    //     return await this.create({ name, email, password: hash })
+    //   },
+    // },
   },
 )
 

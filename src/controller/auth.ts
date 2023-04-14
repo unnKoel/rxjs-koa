@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { Controller } from '../koa-rxjs'
 import { KoaContext } from '../model'
 import route, { Method } from '../operators/route-operator'
@@ -11,8 +12,8 @@ export const authController: Controller = (
   return rootObservable.pipe(
     route('/auth', Method.Get),
     authenticate(),
-    service(async ({ ctx }) => {
-      return ctx.succeed()
-    }),
+    service((serviceObservable) =>
+      serviceObservable.pipe(map(({ ctx }) => ctx.succeed())),
+    ),
   )
 }
